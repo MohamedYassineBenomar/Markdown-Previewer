@@ -1,0 +1,15 @@
+$previewer-header-color:#4aa3a3;
+
+.previewer {
+    background-color: chartreuse;
+  
+    
+    .previewer-header {
+        background-color: $previewer-header-color;
+        border: 1px solid black;
+    }
+
+    .previewer-content {
+        border: 1px solid black;
+    }
+}
