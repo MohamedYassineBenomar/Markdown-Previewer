@@ -2,12 +2,14 @@
     width: 80%;     
     margin: auto;
     padding: 20px;
+
         
     .markdown-header {
         background-color: #4aa3a3;
         border: 1px solid black;
         height: 30px;
         position: relative;
+        box-shadow: 0px 0px 20px;
 
         .markdown-title{      
             position: absolute;
@@ -26,8 +28,9 @@
     }
 
     .markdown-content {
-       
+        
         textarea {
+            box-shadow: 0px 0px 20px;
             background-color: #c0d8d8;
             width: 100%;
             resize: vertical;
