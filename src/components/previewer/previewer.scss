@@ -7,6 +7,22 @@ $previewer-header-color:#4aa3a3;
         background-color: $previewer-header-color;
         border: 1px solid black;
         height: 30px;
+        position: relative;
+
+        .previewer-title{      
+            position: absolute;
+            top: 25%;
+            left: 1%;    
+        }
+
+        .previewer-expand-button {
+            position: absolute;
+            top: 25%;
+            left: 96%;  
+            &:hover {
+                color: white; // Change color on hover
+            }
+        }
     }
 
     .previewer-content {

@@ -7,6 +7,22 @@
         background-color: #4aa3a3;
         border: 1px solid black;
         height: 30px;
+        position: relative;
+
+        .markdown-title{      
+            position: absolute;
+            top: 25%;
+            left: 1%;    
+        }
+
+        .markdown-expand-button {
+            position: absolute;
+            top: 25%;
+            left: 95%;  
+            &:hover {
+                color: white; // Change color on hover
+            }
+        }
     }
 
     .markdown-content {
