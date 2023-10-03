@@ -8,7 +8,9 @@ function Markdown() {
           <div className='markdown-header'>
             <p>Editor</p>
           </div>
-          <textarea>eqzdfezdfe</textarea> 
+          <div className='markdown-content'>
+            <textarea>eqzdfezdfe</textarea> 
+          </div>
         </div> 
   )
 }
