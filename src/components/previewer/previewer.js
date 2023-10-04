@@ -8,6 +8,19 @@ import { useDispatch, useSelector } from 'react-redux';
 function Previewer() {
   const text = useSelector(state => state.rootreducer.text);
 
+  const printelement = () => {
+    if(text.startsWith("# ")){
+      return <h1>{text}</h1>
+    } 
+    if(text.startsWith("## ")){
+      return <h2>{text}</h2>
+    } 
+    else {
+      return <p>{text}</p>
+    }
+    
+  }
+
   return (
     <div className='previewer'>
       <div className='previewer-header'>
@@ -15,7 +28,7 @@ function Previewer() {
         <span className='previewer-expand-button'><FontAwesomeIcon icon={faMaximize} /></span>
       </div>
       <div className='previewer-content'>
-        <p>{text}</p> 
+        {printelement()}
       </div>
     </div>
   )
