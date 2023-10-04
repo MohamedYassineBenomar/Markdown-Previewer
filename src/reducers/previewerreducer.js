@@ -8,10 +8,13 @@ const previewerreducer = createSlice({
     reducers:{
         highlight: (state,action) => {
             state.text = action.payload;
+        },
+        texthandler: (state,action) => {
+            state.text = action.payload;
         }
     }
 });
 
-export const { highlight } = previewerreducer.actions;
+export const { highlight,texthandler } = previewerreducer.actions;
 
 export default previewerreducer.reducer;

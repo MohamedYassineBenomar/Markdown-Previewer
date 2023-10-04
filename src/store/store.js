@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { previewerreducer } from "./reducers/reducer1"
+import previewerreducer from "../reducers/previewerreducer"
 
 const store = configureStore({
     reducer:{
