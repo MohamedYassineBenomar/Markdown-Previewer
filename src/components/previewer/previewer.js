@@ -8,37 +8,48 @@ import { useSelector } from 'react-redux';
 function Previewer() {
   const text = useSelector(state => state.rootreducer.text);
 
-
-
-  const getFormattedElement = (line, index, format) => {
-    switch (format) {
-      case 'h1':
-        return <h1 key={index}>{line}</h1>;
-      case 'h2':
-        return <h2 key={index}>{line}</h2>;
-      case 'h3':
-        return <h3 key={index}>{line}</h3>;
-      default:
-        return <p>{line}</p>
-      
-    }
-  };
   const formattedText = text.split('\n').map((line, index) => {
-    console.log(line);
-    console.log(index);
-    let currentFormat = '';
-    if(line.startsWith("# ")){
-      currentFormat = 'h1';
-    } 
-    else if(line.startsWith("## ")){
-      currentFormat = 'h2';
-    } else if(line.startsWith("### ")){
-      currentFormat = 'h3';
-    } else {
-      currentFormat = '';
-    }
+    let currenttag = "";
     
-    return getFormattedElement(line, index, currentFormat);
+    if(line.startsWith("# ") && !line.includes("`")){
+      currenttag = 'h1';
+      line = line.replace("# ", "");
+      return <h1 key={index}><u>{line}</u></h1>;
+    } else if(line.startsWith("## ")){
+      currenttag = 'h2';
+      line = line.replace("## ", "");
+      return <h2 key={index}>{line}</h2>;
+
+    } else if(line.startsWith("### ")){
+      currenttag = 'h3';
+      line = line.replace("### ", "");
+      return <h3 key={index}>{line}</h3>;
+
+    } 
+    if(line.includes("`")){
+      const formated = line.split('`').map((value,index) => {
+        if(index % 2 === 1 ){
+            return <code>{value}</code>;
+        } else {
+            return value
+        }
+      })
+      if(line.split('`').length > 1){   
+        switch(currenttag){
+          case 'h1':
+            return <h1>{formated}</h1>
+          case 'h2':
+            return <h2>{formated}</h2>
+          case 'h3':
+            return <h3>{formated}</h3>
+          default:
+            return <p>{formated}</p>
+        }           
+      } 
+      return <p>{line}</p>  
+    } else {
+      return <p>{line}</p>
+    }
   });
 
   return (
