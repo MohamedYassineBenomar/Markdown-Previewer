@@ -8,49 +8,90 @@ import { useSelector } from 'react-redux';
 function Previewer() {
   const text = useSelector(state => state.rootreducer.text);
 
-  const formattedText = text.split('\n').map((line, index) => {
-    let currenttag = "";
-    
-    if(line.startsWith("# ") && !line.includes("`")){
-      currenttag = 'h1';
-      line = line.replace("# ", "");
-      return <h1 key={index}><u>{line}</u></h1>;
-    } else if(line.startsWith("## ")){
-      currenttag = 'h2';
-      line = line.replace("## ", "");
-      return <h2 key={index}>{line}</h2>;
-
-    } else if(line.startsWith("### ")){
-      currenttag = 'h3';
-      line = line.replace("### ", "");
-      return <h3 key={index}>{line}</h3>;
-
-    } 
-    if(line.includes("`")){
-      const formated = line.split('`').map((value,index) => {
-        if(index % 2 === 1 ){
-            return <code>{value}</code>;
+  function countOccurrences(str, char) {
+    let count = 0;
+    for (let i = 0; i < str.length; i++) {
+      if (str[i] === char) {
+        count++;
+      }
+    }
+    return count;
+  }
+  let insidemultyline = false;
+  let multyline = [];
+  const show = (texto) => { 
+    const completeformated = texto.split('\n').map((valu,inde) => {
+      
+      if(valu.startsWith("```") && !insidemultyline){
+        insidemultyline = true
+        return
+      }
+      else if(!valu.startsWith("```") && insidemultyline){
+        multyline.push(valu);
+        return
+      } else if(valu.startsWith("```") && insidemultyline){
+        insidemultyline = false
+        const multylineformated = multyline.map((value, index) => {
+          return <>{value}<br /></>
+  
+        })
+        return <pre><code>{multylineformated}</code></pre>
+      } 
+      const formattedLine = valu.split(' ').map((value,index) => {
+         if(value.startsWith("**_")){
+          const strongformated = value.split('**_').map((valueeee,indexxxx) => {  
+         
+            let newstring = valueeee.replace(new RegExp("_\\*\\*", 'g'), '');
+            return <strong key={indexxxx}><em>{newstring}</em></strong>    
+          })
+          return strongformated;
+        }else if(countOccurrences(value,'_')>1){  
+          const italicformated = value.split('_').map((valuee,indexx) => {
+            return <em key={indexx}>{valuee}</em>
+          })
+          return italicformated;
+        } else if(countOccurrences(value,'*')>1){  
+          const strongformated = value.split('**').map((valuee,indexx) => {
+            return <strong key={indexx}>{valuee}</strong>
+          })
+          return strongformated;
+        }else if(countOccurrences(value,'~')>1){  
+          const strongformated = value.split('~~').map((valuee,indexx) => {
+            return <del key={indexx}>{valuee}</del>
+          })
+          return strongformated;
+        }else if(countOccurrences(value,'`')>1){
+          const codeformated = value.split('`').map((valueee,indexxx) => {  
+            return <code key={indexxx}>{valueee}</code>    
+          })
+          return codeformated;
         } else {
-            return value
+          return value
         }
       })
-      if(line.split('`').length > 1){   
-        switch(currenttag){
-          case 'h1':
-            return <h1>{formated}</h1>
-          case 'h2':
-            return <h2>{formated}</h2>
-          case 'h3':
-            return <h3>{formated}</h3>
-          default:
-            return <p>{formated}</p>
-        }           
-      } 
-      return <p>{line}</p>  
-    } else {
-      return <p>{line}</p>
-    }
-  });
+      const formattedLinee = formattedLine.reduce((acc, curr, index) => {
+        if (index !== 0) {
+          acc.push(' '); // Insert space before every element except the first
+        }
+        acc.push(curr); // Add the current element
+        return acc;
+      }, []);
+      console.log(formattedLine);
+      if(formattedLinee[0] === "#"){
+        formattedLinee.shift();
+        return <h1><u>{formattedLinee}</u></h1>
+      } else if(formattedLinee[0] === "##"){
+        formattedLinee.shift();
+        return <h2>{formattedLinee}</h2>
+      }
+      else if(formattedLinee[0] === "###"){
+        formattedLinee.shift();
+        return <h3>{formattedLinee}</h3>
+      }
+      return <p>{formattedLinee}</p>
+    });
+      return completeformated
+  }
 
   return (
     <div className='previewer'>
@@ -59,7 +100,7 @@ function Previewer() {
         <span className='previewer-expand-button'><FontAwesomeIcon icon={faMaximize} /></span>
       </div>
       <div className='previewer-content'>
-        {formattedText}
+        {show(text)}
       </div>
     </div>
   )

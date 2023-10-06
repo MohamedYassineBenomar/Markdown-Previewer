@@ -37,6 +37,12 @@ $previewer-header-color:#4aa3a3;
         code {
             background-color: white;
         }
+
+        pre {
+            background-color: white;
+            white-space: pre-line;
+            overflow-wrap: break-word;
+        }
         
     }
 
