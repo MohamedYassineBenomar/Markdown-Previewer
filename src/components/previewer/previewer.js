@@ -3,11 +3,16 @@ import './previewer.scss'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFreeCodeCamp } from '@fortawesome/free-brands-svg-icons';
 import { faMaximize } from '@fortawesome/free-solid-svg-icons';
+import { faMinimize } from '@fortawesome/free-solid-svg-icons';
 import { useSelector } from 'react-redux';
+import { useEffect } from 'react'; // Add this line
 
 function Previewer() {
   const text = useSelector(state => state.rootreducer.text);
-
+  useEffect(() => {
+    const iconminimize = document.querySelector("#root > div > div > div.previewer > div.previewer-header > span:nth-child(3) > svg");
+    iconminimize.style.display = 'none';
+  }, []); 
   function countOccurrences(str, char) {
     let count = 0;
     for (let i = 0; i < str.length; i++) {
@@ -76,7 +81,6 @@ function Previewer() {
         acc.push(curr); // Add the current element
         return acc;
       }, []);
-      console.log(formattedLine);
       if(formattedLinee[0] === "#"){
         formattedLinee.shift();
         return <h1><u>{formattedLinee}</u></h1>
@@ -92,12 +96,32 @@ function Previewer() {
     });
       return completeformated
   }
-
+  const handlemaximumsize = () => {
+    const markdown = document.querySelector("#root > div > div > div.markdown");
+    markdown.style.display = 'none';
+    const previewercontent = document.querySelector("#root > div > div > div.previewer > div.previewer-content");
+    previewercontent.style.height = "100vh";
+    const iconmaximize = document.querySelector("#root > div > div > div.previewer > div.previewer-header > span:nth-child(2) > svg");
+    iconmaximize.style.display = 'none';
+    const iconminimize = document.querySelector("#root > div > div > div.previewer > div.previewer-header > span:nth-child(3) > svg");
+    iconminimize.style.display = ''; 
+  };
+  const handleminimize = () => {
+    const iconminimize = document.querySelector("#root > div > div > div.previewer > div.previewer-header > span:nth-child(3) > svg");
+    iconminimize.style.display = 'none';
+    const iconmaximize = document.querySelector("#root > div > div > div.previewer > div.previewer-header > span:nth-child(2) > svg");
+    iconmaximize.style.display = '';
+    const previewercontent = document.querySelector("#root > div > div > div.previewer > div.previewer-content");
+    previewercontent.style.height = "";
+    const markdown = document.querySelector("#root > div > div > div.markdown");
+    markdown.style.display = '';
+  }
   return (
     <div className='previewer'>
       <div className='previewer-header'>
         <span className='previewer-title'><FontAwesomeIcon icon={faFreeCodeCamp} /> <strong>Previewer</strong></span>
-        <span className='previewer-expand-button'><FontAwesomeIcon icon={faMaximize} /></span>
+        <span className='previewer-expand-button'  onClick={handlemaximumsize}><FontAwesomeIcon icon={faMaximize} onClick={handlemaximumsize}/></span>
+        <span className='previewer-expand-button' onClick={handleminimize}><FontAwesomeIcon icon={faMinimize} onClick={handleminimize}/></span>
       </div>
       <div className='previewer-content'>
         {show(text)}
